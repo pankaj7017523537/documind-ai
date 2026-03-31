@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+.streamlit/secrets.toml
+*.faiss
+*.pkl
+fix_groq.py
+fix_groq2.py
+venv/
