@@ -240,7 +240,7 @@ strong { color: #fff !important; }
 .powered-by { font-size: 0.58rem; color: rgba(255,255,255,0.2) !important; text-align: center; }
 
 /* Neural net canvas fixed behind */
-#neural-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+#neural-bg { display: none; }
 </style>
 
 <canvas id="neural-bg"></canvas>
