@@ -282,20 +282,17 @@ elif st.session_state.active_tab == "quiz":
                         st.session_state["topic_subject_default"] = subj
                         st.rerun()
             st.markdown("---")
-            st.text_area(
+            typed_topic = st.text_area(
                 "Selected subject / type any topic:",
                 placeholder="e.g. Photosynthesis, French Revolution, React Hooks...",
                 value=st.session_state.get("topic_subject_default", ""),
-                key="topic_subject",
                 height=80,
             )
-
             c1, c2 = st.columns(2)
             num_q_t = c1.slider("Questions", 5, 20, 10, key="topic_num_q")
             diff_t  = c2.selectbox("Difficulty", ["Easy", "Medium", "Hard"], index=1, key="topic_diff")
-
             if st.button("🎯 Generate Topic Quiz", type="primary", use_container_width=True):
-                chosen = st.session_state.get("topic_subject", "").strip()
+                chosen = typed_topic.strip()
                 if not chosen:
                     st.warning("Please enter a topic or click a subject above.")
                 else:
