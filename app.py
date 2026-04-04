@@ -20,7 +20,8 @@ st.markdown("""
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
 
 * { font-family: 'Rajdhani', sans-serif; }
-#MainMenu, footer, header { visibility: hidden; }
+#MainMenu, footer { visibility: hidden; }
+header { background: transparent !important; }
 .block-container { padding-top: 1rem !important; padding-bottom: 1rem !important; }
 .stApp { background: #04060f !important; }
 
@@ -32,24 +33,11 @@ st.markdown("""
 section[data-testid="stSidebar"], section.main { position: relative; z-index: 1; }
 
 /* ── SIDEBAR TOGGLE always visible ── */
-[data-testid="collapsedControl"],
-button[data-testid="collapsedControl"],
-button[aria-label="Open sidebar"],
-button[aria-label="Close sidebar"] {
-    display:      flex       !important;
-    visibility:   visible    !important;
-    opacity:      1          !important;
-    z-index:      99999      !important;
-    position:     fixed      !important;
-    border-radius: 50%       !important;
-    background:   rgba(4,6,15,0.95)  !important;
-    border:       1.5px solid rgba(0,212,255,0.5) !important;
-    box-shadow:   0 0 16px rgba(0,212,255,0.55),
-                  0 0 32px rgba(245,197,24,0.2) !important;
-    transition:   all 0.3s ease !important;
-    color: #00D4FF !important;
+[data-testid="collapsedControl"] {
+    display: flex !important;
+    visibility: visible !important;
+    z-index: 999999 !important;
 }
-[data-testid="collapsedControl"]:hover,
 button[aria-label="Open sidebar"]:hover {
     box-shadow:   0 0 28px rgba(0,212,255,0.9),
                   0 0 56px rgba(245,197,24,0.45) !important;
@@ -70,35 +58,28 @@ div[data-testid="stSidebar"] * { color: #dce8ff !important; }
    GRADIENT NEON BUTTONS — unique gradient per button
    Technique: transparent border + background-clip trick
 ══════════════════════════════════════════════════════ */
-.stButton > button {
+div[data-testid="stButton"] > button {
     position: relative !important;
     width: 100% !important;
     border-radius: 50px !important;
     font-family: 'Orbitron', monospace !important;
-    font-size: 0.6rem !important;
+    font-size: 0.8rem !important;
     font-weight: 700 !important;
     letter-spacing: 1.5px !important;
     text-transform: uppercase !important;
-    padding: 0.58rem 1rem !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    /* Default — Cyan→Blue gradient border */
-    background:
-        linear-gradient(#04060f, #04060f) padding-box,
-        linear-gradient(135deg, #00D4FF, #0066FF) border-box !important;
+    padding: 0.6rem 1rem !important;
+    background: linear-gradient(#04060f, #04060f) padding-box,
+                linear-gradient(135deg, #00D4FF, #0066FF) border-box !important;
     border: 2px solid transparent !important;
     color: #00D4FF !important;
-    text-shadow: 0 0 8px rgba(0,212,255,0.85) !important;
-    box-shadow: 0 0 12px rgba(0,212,255,0.35), 0 0 24px rgba(0,212,255,0.12) !important;
+    box-shadow: 0 0 15px rgba(0,212,255,0.4) !important;
+    transition: all 0.3s ease !important;
 }
-.stButton > button:hover {
-    transform: translateY(-3px) scale(1.04) !important;
-    background:
-        rgba(0,212,255,0.05) padding-box,
-        linear-gradient(135deg, #00D4FF, #0066FF) border-box !important;
-    box-shadow: 0 0 26px rgba(0,212,255,0.8), 0 0 52px rgba(0,212,255,0.3) !important;
+
+div[data-testid="stButton"] > button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 0 25px rgba(0,212,255,0.8) !important;
     color: #fff !important;
-    text-shadow: 0 0 14px #00D4FF !important;
 }
 
 /* ── Process Documents: Gold→Magenta ── */
@@ -445,22 +426,6 @@ details summary { color:rgba(200,220,255,0.68) !important; }
         requestAnimationFrame(draw);
     }
     draw();
-
-    /* ── Sidebar toggle: always keep visible across Streamlit re-renders ── */
-    function keepToggle(){
-        ['[data-testid="collapsedControl"]',
-         'button[aria-label="Open sidebar"]',
-         'button[aria-label="Close sidebar"]'].forEach(s=>{
-            document.querySelectorAll(s).forEach(el=>{
-                el.style.setProperty('display','flex','important');
-                el.style.setProperty('visibility','visible','important');
-                el.style.setProperty('opacity','1','important');
-                el.style.setProperty('z-index','99999','important');
-            });
-        });
-    }
-    keepToggle();
-    new MutationObserver(keepToggle).observe(document.body,{childList:true,subtree:true});
 })();
 </script>
 """, unsafe_allow_html=True)
