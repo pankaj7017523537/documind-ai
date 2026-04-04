@@ -47,7 +47,7 @@ def init_state():
         # The text_area widget uses "chat_input_widget"; this buffer is used to
         # pre-populate it (e.g. when a topic chip is clicked).
         "chat_input_buffer": "",
-        "topic_subject": "",
+        "topic_subject_default": "",
     }
     for k, v in defaults.items():
         if k not in st.session_state:
@@ -279,17 +279,18 @@ elif st.session_state.active_tab == "quiz":
             for i, subj in enumerate(POPULAR_SUBJECTS[:16]):
                 with pcols[i % 4]:
                     if st.button(subj, key=f"pop_{i}", use_container_width=True):
-                        st.session_state["topic_subject"] = subj
-                        st.rerun()
+                       st.session_state["topic_subject_default"] = subj
+                          st.rerun()
 
             st.markdown("---")
 
             st.text_area(
-                "Selected subject / type any topic:",
-                placeholder="e.g. Photosynthesis, French Revolution, React Hooks...",
-                key="topic_subject",
-                height=80,
-            )
+    "Selected subject / type any topic:",
+    placeholder="e.g. Photosynthesis, French Revolution, React Hooks...",
+    value=st.session_state.get("topic_subject_default", ""),
+    key="topic_subject",
+    height=80,
+)
 
             c1, c2 = st.columns(2)
             num_q_t = c1.slider("Questions", 5, 20, 10, key="topic_num_q")
@@ -309,7 +310,7 @@ elif st.session_state.active_tab == "quiz":
                                 st.session_state.quiz_submitted = False
                                 st.session_state.quiz_results   = None
                                 st.session_state.quiz_mode      = f"Topic: {chosen}"
-                                st.session_state["topic_subject"] = ""
+                                st.session_state["topic_subject_default"] = ""
                                 st.rerun()
                             else:
                                 st.error("Could not generate quiz. Please try again.")
