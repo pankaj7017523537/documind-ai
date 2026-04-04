@@ -1,11 +1,5 @@
 import streamlit as st
 
-st.set_page_config(
-    page_title="DocuMind AI",
-    page_icon="??",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
 from src.pdf_processor import process_pdfs, get_raw_text_for_summary
 from src.summariser import summarise_document, compare_documents
 from src.rag_chain import build_rag_chain, ask_question
