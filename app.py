@@ -76,97 +76,42 @@ div[data-testid="stButton"] > button {
     transition: all 0.3s ease !important;
 }
 
-div[data-testid="stButton"] > button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 0 25px rgba(0,212,255,0.8) !important;
-    color: #fff !important;
-}
+background: #04060f !important; 
+border: 2px solid rgba(0,212,255,0.3) !important;
 
-/* ── Process Documents: Gold→Magenta ── */
-div[data-testid="stSidebar"] .stButton:nth-of-type(1) > button {
-    background:
-        linear-gradient(#04060f, #04060f) padding-box,
-        linear-gradient(135deg, #F5C518 0%, #FF2D78 100%) border-box !important;
-    border: 2px solid transparent !important;
+/* ── 1. Process Documents: Gold→Magenta ── */
+div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(4) button {
+    border: 2px solid #F5C518 !important;
     color: #F5C518 !important;
-    text-shadow: 0 0 8px rgba(245,197,24,0.85) !important;
-    box-shadow: 0 0 14px rgba(245,197,24,0.4), 0 0 30px rgba(255,45,120,0.15) !important;
-}
-div[data-testid="stSidebar"] .stButton:nth-of-type(1) > button:hover {
-    background:
-        rgba(245,197,24,0.05) padding-box,
-        linear-gradient(135deg, #F5C518, #FF2D78) border-box !important;
-    box-shadow: 0 0 28px rgba(245,197,24,0.85), 0 0 55px rgba(255,45,120,0.35) !important;
-    color: #fff !important; text-shadow: 0 0 16px #F5C518 !important;
-    transform: translateY(-3px) scale(1.04) !important;
+    box-shadow: 0 0 15px rgba(245,197,24,0.4) !important;
 }
 
-/* ── Q&A Chat: Cyan→Blue ── */
-div[data-testid="stSidebar"] .stButton:nth-of-type(2) > button {
-    background:
-        linear-gradient(#04060f, #04060f) padding-box,
-        linear-gradient(135deg, #00D4FF 0%, #0066FF 100%) border-box !important;
-    border: 2px solid transparent !important;
+/* ── 2. Q&A Chat: Cyan ── */
+div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(8) button {
+    border: 2px solid #00D4FF !important;
     color: #00D4FF !important;
-    text-shadow: 0 0 8px rgba(0,212,255,0.85) !important;
-    box-shadow: 0 0 14px rgba(0,212,255,0.4), 0 0 28px rgba(0,102,255,0.12) !important;
-}
-div[data-testid="stSidebar"] .stButton:nth-of-type(2) > button:hover {
-    background: rgba(0,212,255,0.04) padding-box, linear-gradient(135deg, #00D4FF, #0066FF) border-box !important;
-    box-shadow: 0 0 28px rgba(0,212,255,0.85), 0 0 55px rgba(0,102,255,0.3) !important;
-    color: #fff !important; text-shadow: 0 0 16px #00D4FF !important;
-    transform: translateY(-3px) scale(1.04) !important;
+    box-shadow: 0 0 15px rgba(0,212,255,0.4) !important;
 }
 
-/* ── Document Summary: Violet→Pink ── */
-div[data-testid="stSidebar"] .stButton:nth-of-type(3) > button {
-    background:
-        linear-gradient(#04060f, #04060f) padding-box,
-        linear-gradient(135deg, #BF5FFF 0%, #FF2D78 100%) border-box !important;
-    border: 2px solid transparent !important;
+/* ── 3. Document Summary: Violet ── */
+div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(9) button {
+    border: 2px solid #BF5FFF !important;
     color: #BF5FFF !important;
-    text-shadow: 0 0 8px rgba(191,95,255,0.85) !important;
-    box-shadow: 0 0 14px rgba(191,95,255,0.4), 0 0 28px rgba(255,45,120,0.12) !important;
-}
-div[data-testid="stSidebar"] .stButton:nth-of-type(3) > button:hover {
-    background: rgba(191,95,255,0.04) padding-box, linear-gradient(135deg, #BF5FFF, #FF2D78) border-box !important;
-    box-shadow: 0 0 28px rgba(191,95,255,0.85), 0 0 55px rgba(255,45,120,0.3) !important;
-    color: #fff !important; text-shadow: 0 0 16px #BF5FFF !important;
-    transform: translateY(-3px) scale(1.04) !important;
+    box-shadow: 0 0 15px rgba(191,95,255,0.4) !important;
 }
 
-/* ── Quiz Mode: Green→Cyan ── */
-div[data-testid="stSidebar"] .stButton:nth-of-type(4) > button {
-    background:
-        linear-gradient(#04060f, #04060f) padding-box,
-        linear-gradient(135deg, #00FF87 0%, #00D4FF 100%) border-box !important;
-    border: 2px solid transparent !important;
+/* ── 4. Quiz Mode: Green ── */
+div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(10) button {
+    border: 2px solid #00FF87 !important;
     color: #00FF87 !important;
-    text-shadow: 0 0 8px rgba(0,255,135,0.85) !important;
-    box-shadow: 0 0 14px rgba(0,255,135,0.4), 0 0 28px rgba(0,212,255,0.12) !important;
-}
-div[data-testid="stSidebar"] .stButton:nth-of-type(4) > button:hover {
-    background: rgba(0,255,135,0.04) padding-box, linear-gradient(135deg, #00FF87, #00D4FF) border-box !important;
-    box-shadow: 0 0 28px rgba(0,255,135,0.85), 0 0 55px rgba(0,212,255,0.3) !important;
-    color: #fff !important; text-shadow: 0 0 16px #00FF87 !important;
-    transform: translateY(-3px) scale(1.04) !important;
+    box-shadow: 0 0 15px rgba(0,255,135,0.4) !important;
 }
 
-/* ── Compare Documents: Orange→Red ── */
-div[data-testid="stSidebar"] .stButton:nth-of-type(5) > button {
-    background:
-        linear-gradient(#04060f, #04060f) padding-box,
-        linear-gradient(135deg, #FF8C00 0%, #FF2D78 100%) border-box !important;
-    border: 2px solid transparent !important;
+/* ── 5. Compare Documents: Orange ── */
+div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(11) button {
+    border: 2px solid #FF8C00 !important;
     color: #FF8C00 !important;
-    text-shadow: 0 0 8px rgba(255,140,0,0.85) !important;
-    box-shadow: 0 0 14px rgba(255,140,0,0.4), 0 0 28px rgba(255,45,120,0.12) !important;
-}
-div[data-testid="stSidebar"] .stButton:nth-of-type(5) > button:hover {
-    background: rgba(255,140,0,0.04) padding-box, linear-gradient(135deg, #FF8C00, #FF2D78) border-box !important;
-    box-shadow: 0 0 28px rgba(255,140,0,0.85), 0 0 55px rgba(255,45,120,0.3) !important;
-    color: #fff !important; text-shadow: 0 0 16px #FF8C00 !important;
-    transform: translateY(-3px) scale(1.04) !important;
+    box-shadow: 0 0 15px rgba(255,140,0,0.4) !important;
 }
 
 /* ── Main area primary actions: Gold→Cyan ── */
