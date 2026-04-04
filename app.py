@@ -278,19 +278,17 @@ elif st.session_state.active_tab == "quiz":
             pcols = st.columns(4)
             for i, subj in enumerate(POPULAR_SUBJECTS[:16]):
                 with pcols[i % 4]:
-                    if st.button(subj, key=f"pop_{i}", use_container_width=True):
-                       st.session_state["topic_subject_default"] = subj
-                          st.rerun()
-
+                   if st.button(subj, key=f"pop_{i}", use_container_width=True):
+                        st.session_state["topic_subject_default"] = subj
+                        st.rerun()
             st.markdown("---")
-
             st.text_area(
-    "Selected subject / type any topic:",
-    placeholder="e.g. Photosynthesis, French Revolution, React Hooks...",
-    value=st.session_state.get("topic_subject_default", ""),
-    key="topic_subject",
-    height=80,
-)
+                "Selected subject / type any topic:",
+                placeholder="e.g. Photosynthesis, French Revolution, React Hooks...",
+                value=st.session_state.get("topic_subject_default", ""),
+                key="topic_subject",
+                height=80,
+            )
 
             c1, c2 = st.columns(2)
             num_q_t = c1.slider("Questions", 5, 20, 10, key="topic_num_q")
