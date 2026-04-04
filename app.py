@@ -8,7 +8,7 @@ from src.quiz_engine import (
 )
 from src.utils import get_groq_api_key
 
-# ── Page config ───────────────────────────────────────────────────────────────
+# ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="DocuMind AI",
     page_icon="🧠",
@@ -16,22 +16,240 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ── CSS ───────────────────────────────────────────────────────────────────────
+# ── Modern CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-.main-title{font-size:2.2rem;font-weight:700;color:#185FA5;}
-.sub-title{font-size:1rem;color:#666;margin-bottom:1.5rem;}
-.summary-card{background:#F0F6FF;border-left:4px solid #185FA5;border-radius:8px;padding:1rem 1.25rem;margin-bottom:1rem;}
-.source-box{background:#F8F9FA;border:1px solid #DEE2E6;border-radius:6px;padding:.6rem .9rem;margin-top:4px;font-size:.82rem;color:#555;}
-.chat-user{background:#E6F1FB;border-radius:10px;padding:10px 14px;margin:6px 0;}
-.chat-bot{background:#F0F4F8;border-radius:10px;padding:10px 14px;margin:6px 0;}
-.q-card{background:#FAFAFA;border:1px solid #E0E0E0;border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem;}
-.correct-ans{background:#EAF3DE;border-radius:6px;padding:4px 10px;color:#27500A;display:inline-block;margin:3px 0;}
-.wrong-ans{background:#FCEBEB;border-radius:6px;padding:4px 10px;color:#791F1F;display:inline-block;margin:3px 0;}
-.normal-ans{padding:4px 10px;display:inline-block;margin:3px 0;}
-.score-card{text-align:center;padding:1.5rem;border-radius:12px;margin-bottom:1rem;}
-.topic-chip{display:inline-block;background:#E6F1FB;color:#0C447C;border-radius:14px;padding:4px 12px;font-size:.78rem;font-weight:500;margin:3px;}
-div[data-testid="stSidebar"]{background:#F7F9FC;}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+* { font-family: 'Inter', sans-serif; }
+
+#MainMenu, footer, header { visibility: hidden; }
+.block-container { padding-top: 1.5rem !important; }
+
+.stApp {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+}
+@keyframes gradientShift {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+div[data-testid="stSidebar"] {
+    background: rgba(255,255,255,0.05) !important;
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255,255,255,0.1);
+}
+div[data-testid="stSidebar"] * { color: #fff !important; }
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.3rem;
+    line-height: 1.2;
+}
+.hero-sub {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.feature-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    height: 100%;
+}
+.feature-icon { font-size: 2.2rem; margin-bottom: 0.5rem; }
+.feature-title { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 0.3rem; }
+.feature-desc { font-size: 0.82rem; color: rgba(255,255,255,0.55); }
+
+.section-heading {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.chat-user {
+    background: linear-gradient(135deg, rgba(102,126,234,0.25), rgba(118,75,162,0.25));
+    border: 1px solid rgba(102,126,234,0.3);
+    border-radius: 16px 16px 4px 16px;
+    padding: 12px 16px;
+    margin: 8px 0;
+    color: #fff;
+}
+.chat-bot {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px 16px 16px 4px;
+    padding: 12px 16px;
+    margin: 8px 0;
+    color: #fff;
+}
+
+.summary-card {
+    background: rgba(102,126,234,0.12);
+    border-left: 4px solid #667eea;
+    border-radius: 0 12px 12px 0;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    color: rgba(255,255,255,0.9);
+}
+
+.source-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-top: 6px;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.6);
+}
+
+.q-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.correct-ans {
+    background: rgba(52,211,153,0.2);
+    border: 1px solid rgba(52,211,153,0.4);
+    border-radius: 8px;
+    padding: 4px 12px;
+    color: #34d399;
+    display: inline-block;
+    margin: 3px 0;
+}
+.wrong-ans {
+    background: rgba(248,113,113,0.2);
+    border: 1px solid rgba(248,113,113,0.4);
+    border-radius: 8px;
+    padding: 4px 12px;
+    color: #f87171;
+    display: inline-block;
+    margin: 3px 0;
+}
+.normal-ans { padding: 4px 12px; display: inline-block; margin: 3px 0; color: rgba(255,255,255,0.7); }
+
+.score-card {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.topic-chip {
+    display: inline-block;
+    background: rgba(102,126,234,0.2);
+    border: 1px solid rgba(102,126,234,0.4);
+    color: #a5b4fc;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    margin: 3px;
+}
+
+.stButton > button {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+.stButton > button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(102,126,234,0.4) !important;
+}
+
+.stTextArea textarea, .stTextInput input {
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    border-radius: 10px !important;
+    color: #fff !important;
+}
+
+div[data-testid="stMetric"] {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1rem;
+}
+div[data-testid="stMetric"] label { color: rgba(255,255,255,0.6) !important; }
+div[data-testid="stMetric"] div { color: #fff !important; }
+
+details {
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    border-radius: 12px !important;
+}
+details summary { color: rgba(255,255,255,0.8) !important; }
+
+.stSelectbox label, .stSlider label, .stFileUploader label,
+.stRadio label { color: rgba(255,255,255,0.8) !important; }
+
+div[data-testid="stInfo"] { background: rgba(102,126,234,0.15) !important; border-color: #667eea !important; color: #fff !important; }
+div[data-testid="stWarning"] { background: rgba(251,191,36,0.15) !important; color: #fff !important; }
+div[data-testid="stError"] { background: rgba(248,113,113,0.15) !important; color: #fff !important; }
+div[data-testid="stSuccess"] { background: rgba(52,211,153,0.15) !important; color: #fff !important; }
+
+hr { border-color: rgba(255,255,255,0.1) !important; }
+
+div[data-testid="stProgressBar"] > div > div { background: linear-gradient(90deg, #667eea, #f093fb) !important; }
+
+button[data-baseweb="tab"] { color: rgba(255,255,255,0.6) !important; }
+button[data-baseweb="tab"][aria-selected="true"] { color: #fff !important; border-bottom-color: #667eea !important; }
+
+p, li, span, div { color: rgba(255,255,255,0.85); }
+
+.sidebar-logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.sidebar-tagline { font-size: 0.8rem; color: rgba(255,255,255,0.5) !important; }
+
+.nav-section { font-size: 0.7rem; font-weight: 600; color: rgba(255,255,255,0.4) !important; text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0 0.5rem 0; }
+
+.doc-badge {
+    background: rgba(102,126,234,0.2);
+    border: 1px solid rgba(102,126,234,0.3);
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.8) !important;
+}
+
+.upload-hint {
+    background: rgba(255,255,255,0.04);
+    border: 2px dashed rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    margin: 1rem 0;
+}
+.upload-hint-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+.upload-hint-text { color: rgba(255,255,255,0.5) !important; font-size: 0.95rem; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -43,9 +261,6 @@ def init_state():
         "quiz_questions": [], "quiz_answers": {}, "quiz_submitted": False,
         "quiz_results": None, "quiz_mode": None,
         "active_tab": "chat", "processed_files": [],
-        # FIX: Use a separate buffer key — never used as a widget key directly.
-        # The text_area widget uses "chat_input_widget"; this buffer is used to
-        # pre-populate it (e.g. when a topic chip is clicked).
         "chat_input_buffer": "",
         "topic_subject_default": "",
     }
@@ -57,24 +272,23 @@ init_state()
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### 🧠 DocuMind AI")
-    st.markdown("*Your intelligent document assistant*")
+    st.markdown('<div class="sidebar-logo">🧠 DocuMind AI</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-tagline">Your intelligent document assistant</div>', unsafe_allow_html=True)
     st.divider()
 
+    # Silently validate API key — no success/error shown to user
     api_key = get_groq_api_key()
     if not api_key or api_key == "your_groq_api_key_here":
-        st.error("⚠️ GROQ_API_KEY not set")
-        st.markdown("Get free key at [console.groq.com](https://console.groq.com)")
+        st.error("⚠️ GROQ_API_KEY not configured.")
+        st.markdown("Get a free key at [console.groq.com](https://console.groq.com)")
         st.stop()
-    else:
-        st.success("✅ API key connected")
 
-    st.divider()
-    st.markdown("#### 📁 Upload Documents")
+    st.markdown('<div class="nav-section">📂 Documents</div>', unsafe_allow_html=True)
     uploaded_files = st.file_uploader(
-        "Upload one or more PDF files",
+        "Upload PDF files",
         type=["pdf"],
         accept_multiple_files=True,
+        label_visibility="collapsed",
     )
 
     process_btn = st.button("🚀 Process Documents", use_container_width=True, type="primary")
@@ -82,7 +296,7 @@ with st.sidebar:
     if process_btn and uploaded_files:
         file_names = [f.name for f in uploaded_files]
         if file_names != st.session_state.processed_files:
-            with st.spinner("📖 Reading and indexing documents..."):
+            with st.spinner("📖 Reading and indexing..."):
                 vs, docs, meta = process_pdfs(uploaded_files)
                 st.session_state.vector_store = vs
                 st.session_state.all_docs = docs
@@ -102,32 +316,58 @@ with st.sidebar:
 
     if st.session_state.processed_files:
         st.divider()
-        st.markdown("#### 📚 Loaded Documents")
+        st.markdown('<div class="nav-section">📚 Loaded</div>', unsafe_allow_html=True)
         for fname in st.session_state.processed_files:
             pages = st.session_state.file_metadata.get(fname, {}).get("pages", "?")
-            st.markdown(f"- 📄 **{fname}** ({pages} pages)")
+            st.markdown(f'<div class="doc-badge">📄 {fname[:22]}{"…" if len(fname)>22 else ""} · {pages}p</div>', unsafe_allow_html=True)
 
     st.divider()
-    st.markdown("#### 🗂️ Navigate")
+    st.markdown('<div class="nav-section">🗂️ Navigate</div>', unsafe_allow_html=True)
     if st.button("💬 Q&A Chat",          use_container_width=True): st.session_state.active_tab = "chat"
     if st.button("📋 Document Summary",  use_container_width=True): st.session_state.active_tab = "summary"
     if st.button("🧩 Quiz Mode",          use_container_width=True): st.session_state.active_tab = "quiz"
     if st.button("🔍 Compare Documents", use_container_width=True): st.session_state.active_tab = "compare"
 
     st.divider()
-    st.markdown("<small>LangChain · Groq LLaMA 3 · FAISS · Streamlit</small>", unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-tagline" style="text-align:center">Powered by LangChain · Groq · FAISS</div>', unsafe_allow_html=True)
 
 # ── Header ────────────────────────────────────────────────────────────────────
-st.markdown('<p class="main-title">🧠 DocuMind AI</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-title">Upload PDFs → summaries, Q&A with citations, quizzes, document comparison</p>', unsafe_allow_html=True)
+st.markdown('<div class="hero-title">🧠 DocuMind AI</div>', unsafe_allow_html=True)
+st.markdown('<div class="hero-sub">Upload PDFs → get instant summaries, ask questions with citations, generate quizzes & compare documents</div>', unsafe_allow_html=True)
 
 if not st.session_state.vector_store:
-    st.info("👈 Upload PDF documents from the sidebar and click **Process Documents** to get started.")
+    st.markdown("""
+    <div class="upload-hint">
+        <div class="upload-hint-icon">📂</div>
+        <div class="upload-hint-text">Upload your PDF documents from the sidebar and click <strong>Process Documents</strong> to get started</div>
+    </div>
+    """, unsafe_allow_html=True)
+
     c1, c2, c3, c4 = st.columns(4)
-    c1.markdown("#### 💬 Smart Q&A\nAsk anything with source citations")
-    c2.markdown("#### 📋 Auto Summary\nInstant summary of every PDF")
-    c3.markdown("#### 🧩 Quiz Generator\nQuiz from PDF or any topic")
-    c4.markdown("#### 🔍 Doc Compare\nCompare two documents side by side")
+    with c1:
+        st.markdown("""<div class="feature-card">
+            <div class="feature-icon">💬</div>
+            <div class="feature-title">Smart Q&A</div>
+            <div class="feature-desc">Ask anything with accurate source citations</div>
+        </div>""", unsafe_allow_html=True)
+    with c2:
+        st.markdown("""<div class="feature-card">
+            <div class="feature-icon">📋</div>
+            <div class="feature-title">Auto Summary</div>
+            <div class="feature-desc">Instant structured summary of every PDF</div>
+        </div>""", unsafe_allow_html=True)
+    with c3:
+        st.markdown("""<div class="feature-card">
+            <div class="feature-icon">🧩</div>
+            <div class="feature-title">Quiz Generator</div>
+            <div class="feature-desc">Quiz from PDF or any topic you choose</div>
+        </div>""", unsafe_allow_html=True)
+    with c4:
+        st.markdown("""<div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <div class="feature-title">Doc Compare</div>
+            <div class="feature-desc">Compare two documents side by side</div>
+        </div>""", unsafe_allow_html=True)
     st.stop()
 
 
@@ -135,12 +375,8 @@ if not st.session_state.vector_store:
 # TAB 1 – Q&A CHAT
 # ═══════════════════════════════════════════════════════════════════════════════
 if st.session_state.active_tab == "chat":
-    st.markdown("## 💬 Ask Anything")
+    st.markdown('<div class="section-heading">💬 Ask Anything</div>', unsafe_allow_html=True)
 
-    # ── Topic chips ──────────────────────────────────────────────────────────
-    # KEY FIX: On click, directly call ask_question and add to chat history.
-    # No text area involvement — this avoids ALL session_state widget conflicts
-    # and instantly shows the answer without a second manual click.
     first_file = st.session_state.processed_files[0] if st.session_state.processed_files else None
     if first_file and first_file in st.session_state.summaries:
         topics = st.session_state.summaries[first_file].get("key_topics", [])
@@ -163,7 +399,6 @@ if st.session_state.active_tab == "chat":
 
     st.divider()
 
-    # ── Chat history ──────────────────────────────────────────────────────────
     for msg in st.session_state.chat_history:
         if msg["role"] == "user":
             st.markdown(f'<div class="chat-user">👤 <b>You:</b> {msg["content"]}</div>', unsafe_allow_html=True)
@@ -175,7 +410,6 @@ if st.session_state.active_tab == "chat":
                     for src in msg["sources"]:
                         st.markdown(f'<div class="source-box">{src["label"]}<br><em>{src["excerpt"]}...</em></div>', unsafe_allow_html=True)
 
-    # Plain text area — key is only ever read, never written to manually
     st.text_area(
         "Ask a question about your documents:",
         placeholder="e.g. What is the main argument of this document?",
@@ -187,7 +421,7 @@ if st.session_state.active_tab == "chat":
     with col_ask:
         ask_btn = st.button("🔍 Ask DocuMind", type="primary", use_container_width=True)
     with col_clear:
-        if st.button("🗒️ Clear Chat", use_container_width=True):
+        if st.button("🗑️ Clear Chat", use_container_width=True):
             st.session_state.chat_history = []
             st.session_state.rag_chain = build_rag_chain(st.session_state.vector_store)
             st.rerun()
@@ -210,7 +444,7 @@ if st.session_state.active_tab == "chat":
 # TAB 2 – SUMMARY
 # ═══════════════════════════════════════════════════════════════════════════════
 elif st.session_state.active_tab == "summary":
-    st.markdown("## 📋 Document Summaries")
+    st.markdown('<div class="section-heading">📋 Document Summaries</div>', unsafe_allow_html=True)
 
     for fname in st.session_state.processed_files:
         summary = st.session_state.summaries.get(fname, {})
@@ -239,7 +473,7 @@ elif st.session_state.active_tab == "summary":
 # TAB 3 – QUIZ
 # ═══════════════════════════════════════════════════════════════════════════════
 elif st.session_state.active_tab == "quiz":
-    st.markdown("## 🧩 Quiz Mode")
+    st.markdown('<div class="section-heading">🧩 Quiz Mode</div>', unsafe_allow_html=True)
 
     if not st.session_state.quiz_questions and not st.session_state.quiz_submitted:
         st.markdown("### Choose how to generate your quiz")
@@ -278,7 +512,7 @@ elif st.session_state.active_tab == "quiz":
             pcols = st.columns(4)
             for i, subj in enumerate(POPULAR_SUBJECTS[:16]):
                 with pcols[i % 4]:
-                   if st.button(subj, key=f"pop_{i}", use_container_width=True):
+                    if st.button(subj, key=f"pop_{i}", use_container_width=True):
                         st.session_state["topic_subject_default"] = subj
                         st.rerun()
             st.markdown("---")
@@ -363,15 +597,20 @@ elif st.session_state.active_tab == "quiz":
 
     elif st.session_state.quiz_submitted and st.session_state.quiz_results:
         r = st.session_state.quiz_results
-        color_map = {"green": "#EAF3DE", "blue": "#E6F1FB", "orange": "#FAEEDA", "red": "#FCEBEB"}
-        bg = color_map.get(r["grade_color"], "#F0F0F0")
+        color_map = {
+            "green":  "rgba(52,211,153,0.15)",
+            "blue":   "rgba(102,126,234,0.15)",
+            "orange": "rgba(251,191,36,0.15)",
+            "red":    "rgba(248,113,113,0.15)"
+        }
+        bg = color_map.get(r["grade_color"], "rgba(255,255,255,0.08)")
 
         st.markdown(f"""
-        <div class="score-card" style="background:{bg}">
-          <h1 style="font-size:3rem;margin:0">{r['percentage']}%</h1>
-          <h2 style="margin:4px 0">{r['grade']}</h2>
-          <p style="font-size:1rem;color:#555">{r['correct']} correct out of {r['total']}</p>
-          <p style="font-size:0.95rem">{r['message']}</p>
+        <div class="score-card" style="background:{bg};border:1px solid rgba(255,255,255,0.1)">
+          <h1 style="font-size:3.5rem;margin:0;color:#fff">{r['percentage']}%</h1>
+          <h2 style="margin:4px 0;color:#fff">{r['grade']}</h2>
+          <p style="font-size:1rem;color:rgba(255,255,255,0.6)">{r['correct']} correct out of {r['total']}</p>
+          <p style="font-size:0.95rem;color:rgba(255,255,255,0.7)">{r['message']}</p>
         </div>""", unsafe_allow_html=True)
 
         c1, c2, c3 = st.columns(3)
@@ -410,7 +649,7 @@ elif st.session_state.active_tab == "quiz":
 # TAB 4 – COMPARE
 # ═══════════════════════════════════════════════════════════════════════════════
 elif st.session_state.active_tab == "compare":
-    st.markdown("## 🔍 Compare Documents")
+    st.markdown('<div class="section-heading">🔍 Compare Documents</div>', unsafe_allow_html=True)
 
     if len(st.session_state.processed_files) < 2:
         st.warning("⚠️ Please upload at least **2 documents** to use comparison mode.")
@@ -420,22 +659,16 @@ elif st.session_state.active_tab == "compare":
         remaining = [f for f in st.session_state.processed_files if f != doc_a]
         doc_b = c2.selectbox("Document B:", remaining, key="doc_b")
 
-        compare_topic = st.text_input(
-            "Topic to compare:",
-            placeholder="e.g. climate change, machine learning...",
-        )
-
-        if st.button("🔍 Compare Now", type="primary", use_container_width=True):
-            if not compare_topic.strip():
-                st.warning("Please enter a topic.")
+        if st.button("🔍 Compare Documents", type="primary", use_container_width=True):
+            raw_a = st.session_state.file_metadata.get(doc_a, {}).get("raw_text", "")
+            raw_b = st.session_state.file_metadata.get(doc_b, {}).get("raw_text", "")
+            if not raw_a or not raw_b:
+                st.error("Could not extract text from one or both documents.")
             else:
-                text_a = st.session_state.file_metadata.get(doc_a, {}).get("raw_text", "")
-                text_b = st.session_state.file_metadata.get(doc_b, {}).get("raw_text", "")
-                with st.spinner(f"Comparing on '{compare_topic}'..."):
+                with st.spinner("🔍 Comparing documents..."):
                     try:
-                        comparison = compare_documents(text_a, doc_a, text_b, doc_b, compare_topic)
-                        st.markdown(f"### 📊 Comparison: {compare_topic}")
-                        st.markdown("---")
-                        st.markdown(comparison)
+                        comparison = compare_documents(raw_a, doc_a, raw_b, doc_b)
+                        st.markdown("### 📊 Comparison Results")
+                        st.markdown(f'<div class="summary-card">{comparison}</div>', unsafe_allow_html=True)
                     except Exception as e:
-                        st.error(f"Error: {str(e)}")
+                        st.error(f"Error comparing documents: {str(e)}")
