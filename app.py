@@ -32,100 +32,78 @@ header { background: transparent !important; }
 }
 section[data-testid="stSidebar"], section.main { position: relative; z-index: 1; }
 
-/* ── NEW ROTATING NEON BUTTON STYLE ── */
+/* ── NEW CLEAN NEON BORDER STYLE (No Rotation) ── */
 div[data-testid="stButton"] > button {
     position: relative !important;
-    background: #04060f !important; /* Dark center */
-    color: white !important;
-    padding: 0.7rem 1.2rem !important;
+    width: 100% !important;
+    border-radius: 50px !important;
     font-family: 'Orbitron', sans-serif !important;
     font-weight: 700 !important;
-    border-radius: 50px !important;
-    border: none !important; /* Hide default border */
-    z-index: 1 !important;
-    overflow: hidden !important;
-    width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
+    letter-spacing: 1.5px !important;
+    padding: 0.6rem 1rem !important;
+    
+    /* This creates the "Stay in place" gradient border */
+    background: #04060f padding-box, 
+                linear-gradient(90deg, #00D4FF, #BF5FFF) border-box !important;
+    border: 2px solid transparent !important;
+    
+    color: white !important;
+    transition: all 0.3s ease !important;
+    /* Subtle glow that stays on the border */
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.2) !important;
 }
 
-/* The Rotating Gradient Ring */
-div[data-testid="stButton"] > button::before {
-    content: '' !important;
-    position: absolute !important;
-    top: -50% !important;
-    left: -50% !important;
-    width: 200% !important;
-    height: 200% !important;
-    /* Create the colorful rotating ring */
-    background: conic-gradient(
-        transparent, 
-        #00D4FF, 
-        #BF5FFF, 
-        #F5C518, 
-        #00FF87, 
-        transparent 30%
-    ) !important;
-    animation: rotate-neon 3s linear infinite !important;
-    z-index: -2 !important;
+div[data-testid="stButton"] > button:hover {
+    transform: translateY(-2px) !important;
+    /* Stronger glow on hover */
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.6) !important;
+    color: #fff !important;
 }
 
-/* The Inner Dark Cover (Creates the "Border" look) */
-div[data-testid="stButton"] > button::after {
-    content: '' !important;
-    position: absolute !important;
-    inset: 3px !important; /* This thickness determines border width */
-    background: #04060f !important;
-    border-radius: 50px !important;
-    z-index: -1 !important;
-}
-
-/* The Rotation Animation */
-@keyframes rotate-neon {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* Hover Glow Effect */
+/* ── KEEP THIS: GLOBAL HOVER EFFECT ── */
 div[data-testid="stButton"] > button:hover {
     color: #fff !important;
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4) !important;
-    transform: scale(1.02) !important;
+    /* This creates a soft cyan glow for all default buttons */
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.6) !important;
+    /* 'translateY' feels more premium than 'scale' for these thin borders */
+    transform: translateY(-2px) !important;
+    transition: all 0.3s ease !important;
 }
 
-/* ── Process Button: Gold/Red Theme ── */
-div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(4) button::before {
-    background: conic-gradient(transparent, #F5C518, #FF2D78, transparent 30%) !important;
+/* ── 1. Process: Gold to Orange ── */
+div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(4) button {
+    background: #04060f padding-box, 
+                linear-gradient(90deg, #F5C518, #FF8C00) border-box !important;
 }
 
-/* ── Q&A Button: Cyan/Blue Theme ── */
-div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(8) button::before {
-    background: conic-gradient(transparent, #00D4FF, #0066FF, transparent 30%) !important;
+/* ── 2. Q&A: Cyan to Blue ── */
+div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(8) button {
+    background: #04060f padding-box, 
+                linear-gradient(90deg, #00D4FF, #0066FF) border-box !important;
 }
 
-/* ── Summary Button: Purple Theme ── */
-div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(9) button::before {
-    background: conic-gradient(transparent, #BF5FFF, #FF2D78, transparent 30%) !important;
+/* ── 3. Summary: Purple to Pink ── */
+div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(9) button {
+    background: #04060f padding-box, 
+                linear-gradient(90deg, #BF5FFF, #FF2D78) border-box !important;
 }
 
-/* ── Quiz Button: Green Theme ── */
-div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(10) button::before {
-    background: conic-gradient(transparent, #00FF87, #00D4FF, transparent 30%) !important;
+/* ── 4. Quiz: Green to Cyan ── */
+div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(10) button {
+    background: #04060f padding-box, 
+                linear-gradient(90deg, #00FF87, #00D4FF) border-box !important;
 }
 
-/* ── 5. Compare Button: Red/Orange Theme (nth-of-type 11) ── */
-div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(11) button::before {
-    background: conic-gradient(
-        transparent, 
-        #FF4B4B, 
-        #FF8C00, 
-        transparent 30%
-    ) !important;
+/* ── 5. Compare: Red to Orange ── */
+div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(11) button {
+    background: #04060f padding-box, 
+                linear-gradient(90deg, #FF2D78, #FF8C00) border-box !important;
 }
-
-/* Hover tweak for Compare Button to match its theme */
+/* Update this for the Compare Button Hover */
 div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(11) button:hover {
-    box-shadow: 0 0 20px rgba(255, 75, 75, 0.4) !important;
+    /* Changed to match the new 0.6 opacity and Red/Orange theme */
+    box-shadow: 0 0 20px rgba(255, 45, 120, 0.6) !important;
+    transform: translateY(-2px) !important;
 }
 
 /* ── Main area primary actions: Gold→Cyan ── */
