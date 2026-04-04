@@ -26,7 +26,7 @@ st.markdown("""
 .stApp { background: #020818 !important; }
 
 /* Sidebar */
-div[data-testid="stSidebar"] {
+div[data-testid="stSidebar"] { position: relative; z-index: 999 !important;
     background: rgba(2,8,24,0.97) !important;
     border-right: 1px solid rgba(245,197,24,0.2) !important;
 }
@@ -240,7 +240,7 @@ strong { color: #fff !important; }
 .powered-by { font-size: 0.58rem; color: rgba(255,255,255,0.2) !important; text-align: center; }
 
 /* Neural net canvas fixed behind */
-#neural-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+#neural-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
 </style>
 
 <canvas id="neural-bg"></canvas>
