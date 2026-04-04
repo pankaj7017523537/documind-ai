@@ -24,6 +24,7 @@ st.markdown("""
 #MainMenu, footer, header { visibility: hidden; }
 .block-container { padding-top: 1.2rem !important; }
 .stApp { background: #020818 !important; }
+.stApp::before { content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(ellipse at 20% 50%, rgba(245,197,24,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(0,212,255,0.08) 0%, transparent 50%); pointer-events: none; z-index: 0; }
 
 /* Sidebar */
 div[data-testid="stSidebar"] {
@@ -240,35 +241,9 @@ strong { color: #fff !important; }
 .powered-by { font-size: 0.58rem; color: rgba(255,255,255,0.2) !important; text-align: center; }
 
 /* Neural net canvas fixed behind */
-#neural-bg { display: none; }
 </style>
 
-<canvas id="neural-bg"></canvas>
-<script>
-(function(){
-  const c = document.getElementById('neural-bg');
-  const ctx = c.getContext('2d');
-  function resize(){ c.width = window.innerWidth; c.height = window.innerHeight; }
-  resize(); window.addEventListener('resize', resize);
-  const N = 75, nodes = [];
-  for(let i=0;i<N;i++) nodes.push({x:Math.random()*c.width, y:Math.random()*c.height, vx:(Math.random()-.5)*.38, vy:(Math.random()-.5)*.38, r:Math.random()*2.2+.8, gold:Math.random()>.5});
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    for(let i=0;i<N;i++) for(let j=i+1;j<N;j++){
-      const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y, d=Math.sqrt(dx*dx+dy*dy);
-      if(d<125){const a=(1-d/125)*.2; ctx.strokeStyle=nodes[i].gold?`rgba(245,197,24,${a})`:`rgba(0,212,255,${a})`; ctx.lineWidth=.55; ctx.beginPath(); ctx.moveTo(nodes[i].x,nodes[i].y); ctx.lineTo(nodes[j].x,nodes[j].y); ctx.stroke();}
-    }
-    for(const n of nodes){
-      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
-      ctx.fillStyle=n.gold?'rgba(245,197,24,.75)':'rgba(0,212,255,.75)'; ctx.fill();
-      n.x+=n.vx; n.y+=n.vy;
-      if(n.x<0||n.x>c.width)n.vx*=-1; if(n.y<0||n.y>c.height)n.vy*=-1;
-    }
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-</script>
+
 """, unsafe_allow_html=True)
 
 # ── Session state ─────────────────────────────────────────────────────────────
@@ -713,3 +688,4 @@ elif st.session_state.active_tab == "compare":
                         st.markdown(f'<div class="summary-card">{comparison}</div>', unsafe_allow_html=True)
                     except Exception as e:
                         st.error(f"Error comparing documents: {str(e)}")
+
