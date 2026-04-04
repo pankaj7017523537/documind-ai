@@ -58,60 +58,63 @@ div[data-testid="stSidebar"] * { color: #dce8ff !important; }
    GRADIENT NEON BUTTONS — unique gradient per button
    Technique: transparent border + background-clip trick
 ══════════════════════════════════════════════════════ */
+/* ── REPLACE GLOBAL BUTTON STYLE (Line 73-91) ── */
 div[data-testid="stButton"] > button {
     position: relative !important;
     width: 100% !important;
     border-radius: 50px !important;
-    font-family: 'Orbitron', monospace !important;
-    font-size: 0.8rem !important;
+    font-family: 'Orbitron', sans-serif !important;
     font-weight: 700 !important;
     letter-spacing: 1.5px !important;
-    text-transform: uppercase !important;
     padding: 0.6rem 1rem !important;
-    background: linear-gradient(#04060f, #04060f) padding-box,
-                linear-gradient(135deg, #00D4FF, #0066FF) border-box !important;
+    
+    /* This makes the border a gradient */
+    background: #04060f padding-box, 
+                linear-gradient(to right, #ff00cc, #3333ff) border-box !important;
     border: 2px solid transparent !important;
-    color: #00D4FF !important;
-    box-shadow: 0 0 15px rgba(0,212,255,0.4) !important;
+    
+    color: white !important;
     transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+}
+
+div[data-testid="stButton"] > button:hover {
+    transform: scale(1.03) !important;
+    box-shadow: 0 0 20px rgba(255, 0, 204, 0.4) !important;
 }
 
 background: #04060f !important; 
 border: 2px solid rgba(0,212,255,0.3) !important;
 
-/* ── 1. Process Documents: Gold→Magenta ── */
+/* ── 1. Process: Gold/Orange Gradient (nth-of-type 4) ── */
 div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(4) button {
-    border: 2px solid #F5C518 !important;
-    color: #F5C518 !important;
-    box-shadow: 0 0 15px rgba(245,197,24,0.4) !important;
+    background: #04060f padding-box, 
+                linear-gradient(135deg, #F5C518, #FF8C00) border-box !important;
+    text-shadow: 0 0 5px #F5C518 !important;
 }
 
-/* ── 2. Q&A Chat: Cyan ── */
+/* ── 2. Q&A: Cyan/Blue Gradient (nth-of-type 8) ── */
 div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(8) button {
-    border: 2px solid #00D4FF !important;
-    color: #00D4FF !important;
-    box-shadow: 0 0 15px rgba(0,212,255,0.4) !important;
+    background: #04060f padding-box, 
+                linear-gradient(135deg, #00D4FF, #0066FF) border-box !important;
 }
 
-/* ── 3. Document Summary: Violet ── */
+/* ── 3. Summary: Purple/Pink Gradient (nth-of-type 9) ── */
 div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(9) button {
-    border: 2px solid #BF5FFF !important;
-    color: #BF5FFF !important;
-    box-shadow: 0 0 15px rgba(191,95,255,0.4) !important;
+    background: #04060f padding-box, 
+                linear-gradient(135deg, #BF5FFF, #FF2D78) border-box !important;
 }
 
-/* ── 4. Quiz Mode: Green ── */
+/* ── 4. Quiz: Green/Cyan Gradient (nth-of-type 10) ── */
 div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(10) button {
-    border: 2px solid #00FF87 !important;
-    color: #00FF87 !important;
-    box-shadow: 0 0 15px rgba(0,255,135,0.4) !important;
+    background: #04060f padding-box, 
+                linear-gradient(135deg, #00FF87, #00D4FF) border-box !important;
 }
 
-/* ── 5. Compare Documents: Orange ── */
+/* ── 5. Compare: Red/Orange Gradient (nth-of-type 11) ── */
 div[data-testid="stSidebar"] div.stElementContainer:nth-of-type(11) button {
-    border: 2px solid #FF8C00 !important;
-    color: #FF8C00 !important;
-    box-shadow: 0 0 15px rgba(255,140,0,0.4) !important;
+    background: #04060f padding-box, 
+                linear-gradient(135deg, #FF2D78, #FF8C00) border-box !important;
 }
 
 /* ── Main area primary actions: Gold→Cyan ── */
