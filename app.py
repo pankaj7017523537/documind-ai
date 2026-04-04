@@ -411,10 +411,20 @@ with st.sidebar:
                 st.session_state.chat_history   = []
                 st.session_state.summaries      = {}
                 st.session_state.processed_files = file_names
-            with st.spinner("✨ Generating summaries..."):
-                for f in uploaded_files:
-                    raw = get_raw_text_for_summary(docs, f.name)
-                    st.session_state.summaries[f.name] = summarise_document(raw, f.name)
+    with st.spinner("✨ Generating summaries..."):
+        for f in uploaded_files:
+            raw = get_raw_text_for_summary(docs, f.name)
+            try:
+                # Attempt to summarize the document
+                st.session_state.summaries[f.name] = summarise_document(raw, f.name)
+            except Exception as e:
+                # Check if it's a rate limit error
+                if "rate_limit_exceeded" in str(e).lower():
+                    st.warning("⚠️ **Groq is taking a breather!** We've hit the daily limit for this AI model. Please try again in about 10 minutes or switch to a lighter model.")
+                else:
+                    st.error(f"🛸 **Unexpected Error:** {str(e)}")
+                # Stop execution so the app doesn't crash further down
+                st.stop()
             st.success(f"✅ {len(uploaded_files)} document(s) ready!")
             st.rerun()
 
