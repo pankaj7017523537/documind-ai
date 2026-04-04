@@ -10,3 +10,5 @@ sentence-transformers
 python-dotenv
 groq
 tiktoken
+torchvision
+torch
