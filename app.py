@@ -7,6 +7,42 @@ from src.quiz_engine import (
     evaluate_quiz, POPULAR_SUBJECTS,
 )
 from src.utils import get_groq_api_key
+# ── Groq rate-limit detector ──────────────────────────────────────────────────
+def is_rate_limit_error(exc: Exception) -> bool:
+    msg = str(exc).lower()
+    return any(k in msg for k in [
+        "rate limit","ratelimit","rate_limit","quota","exceeded",
+        "too many requests","429","insufficient_quota","tokens per",
+        "requests per","limit reached","capacity",
+    ])
+
+RATE_LIMIT_HTML = """
+<div style="background:linear-gradient(135deg,rgba(255,140,0,0.08),rgba(255,45,120,0.06));
+            border:1.5px solid rgba(255,140,0,0.45);border-radius:16px;
+            padding:1.4rem 1.6rem;margin:0.8rem 0;text-align:center;">
+    <div style="font-size:2.2rem;margin-bottom:0.5rem;">⚡</div>
+    <div style="font-family:'Orbitron',monospace;font-size:0.9rem;font-weight:700;
+                color:#FF8C00;letter-spacing:1px;margin-bottom:0.5rem;">
+        Groq API Limit Reached
+    </div>
+    <div style="font-size:0.88rem;color:rgba(220,220,255,0.7);line-height:1.65;margin-bottom:0.8rem;">
+        You've used up all available Groq API tokens for this period.<br>
+        DocuMind will be back to full speed once your quota resets — usually within a few minutes to an hour.
+    </div>
+    <div style="display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;margin-top:0.6rem;">
+        <span style="background:rgba(255,140,0,0.1);border:1px solid rgba(255,140,0,0.3);
+                     border-radius:20px;padding:3px 14px;font-size:0.72rem;color:#FF8C00;">
+            ⏳ Quota resets automatically
+        </span>
+        <span style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.25);
+                     border-radius:20px;padding:3px 14px;font-size:0.72rem;color:#00D4FF;">
+            🔑 Get a new key at console.groq.com
+        </span>
+    </div>
+</div>"""
+
+def show_rate_limit_msg():
+    st.markdown(RATE_LIMIT_HTML, unsafe_allow_html=True)
 
 st.set_page_config(
     page_title="DocuMind AI",
@@ -403,7 +439,7 @@ with st.sidebar:
         file_names = [f.name for f in uploaded_files]
         if file_names != st.session_state.processed_files:
             with st.spinner("📖 Reading and indexing..."):
-                vs,docs,meta = process_pdfs(uploaded_files)
+                vs, docs, meta = process_pdfs(uploaded_files)
                 st.session_state.vector_store   = vs
                 st.session_state.all_docs       = docs
                 st.session_state.file_metadata  = meta
@@ -412,10 +448,22 @@ with st.sidebar:
                 st.session_state.summaries      = {}
                 st.session_state.processed_files = file_names
             with st.spinner("✨ Generating summaries..."):
+                _limit_hit = False
                 for f in uploaded_files:
                     raw = get_raw_text_for_summary(docs, f.name)
-                    st.session_state.summaries[f.name] = summarise_document(raw, f.name)
-            st.success(f"✅ {len(uploaded_files)} document(s) ready!")
+                    try:
+                        st.session_state.summaries[f.name] = summarise_document(raw, f.name)
+                    except Exception as _e:
+                        if is_rate_limit_error(_e):
+                            _limit_hit = True
+                            st.session_state.summaries[f.name] = {}
+                        else:
+                            st.error(f"Error summarising {f.name}: {str(_e)}")
+            if _limit_hit:
+                show_rate_limit_msg()
+                st.warning("📄 Documents indexed — summaries skipped due to API limit. Wait for sometimes, we will be right back here!")
+            else:
+                st.success(f"✅ {len(uploaded_files)} document(s) ready!")
             st.rerun()
 
     if st.session_state.processed_files:
@@ -537,8 +585,14 @@ if st.session_state.active_tab == "chat":
                         chip_q = f"Explain {topic} based on the document"
                         st.session_state.chat_history.append({"role":"user","content":chip_q})
                         with st.spinner(f"🤔 Thinking about '{topic}'..."):
-                            result = ask_question(st.session_state.rag_chain, chip_q)
-                        st.session_state.chat_history.append({"role":"assistant","content":result["answer"],"sources":result["sources"]})
+                            try:
+                                result = ask_question(st.session_state.rag_chain, chip_q)
+                                st.session_state.chat_history.append({"role":"assistant","content":result["answer"],"sources":result["sources"]})
+                            except Exception as _e:
+                                if is_rate_limit_error(_e):
+                                    st.session_state.chat_history.append({"role":"assistant","content":"__rate_limit__","sources":[]})
+                                else:
+                                    st.session_state.chat_history.append({"role":"assistant","content":f"⚠️ Error: {str(_e)}","sources":[]})
                         st.rerun()
     st.markdown('<hr class="glow-line">', unsafe_allow_html=True)
     for msg in st.session_state.chat_history:
@@ -546,11 +600,14 @@ if st.session_state.active_tab == "chat":
             st.markdown(f'<div class="chat-user">👤 <b>You:</b> {msg["content"]}</div>', unsafe_allow_html=True)
         else:
             st.markdown('<div class="chat-bot">🧠 <b>DocuMind:</b></div>', unsafe_allow_html=True)
-            st.markdown(msg["content"])
-            if msg.get("sources"):
-                with st.expander("📌 Sources", expanded=False):
-                    for src in msg["sources"]:
-                        st.markdown(f'<div class="source-box">{src["label"]}<br><em>{src["excerpt"]}...</em></div>', unsafe_allow_html=True)
+            if msg["content"] == "__rate_limit__":
+                show_rate_limit_msg()
+            else:
+                st.markdown(msg["content"])
+        if msg.get("sources"):
+            with st.expander("📌 Sources", expanded=False):
+                for src in msg["sources"]:
+                    st.markdown(f'<div class="source-box">{src["label"]}<br><em>{src["excerpt"]}...</em></div>', unsafe_allow_html=True)
     st.text_area("Ask a question:", placeholder="e.g. What is the main argument of this document?", key="chat_input_widget", height=80)
     col_ask,col_clear = st.columns([4,1])
     with col_ask:
@@ -564,8 +621,14 @@ if st.session_state.active_tab == "chat":
     if ask_btn and question:
         st.session_state.chat_history.append({"role":"user","content":question})
         with st.spinner("🤔 Thinking..."):
-            result = ask_question(st.session_state.rag_chain, question)
-        st.session_state.chat_history.append({"role":"assistant","content":result["answer"],"sources":result["sources"]})
+            try:
+                result = ask_question(st.session_state.rag_chain, question)
+                st.session_state.chat_history.append({"role":"assistant","content":result["answer"],"sources":result["sources"]})
+            except Exception as _e:
+                if is_rate_limit_error(_e):
+                    st.session_state.chat_history.append({"role":"assistant","content":"__rate_limit__","sources":[]})
+                else:
+                    st.session_state.chat_history.append({"role":"assistant","content":f"⚠️ Error: {str(_e)}","sources":[]})
         st.rerun()
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -618,7 +681,9 @@ elif st.session_state.active_tab == "quiz":
                                 st.session_state.quiz_submitted=False; st.session_state.quiz_results=None
                                 st.session_state.quiz_mode=f"PDF: {selected_file}"; st.rerun()
                             else: st.error("Could not generate quiz. Try a different document.")
-                        except Exception as e: st.error(f"Error: {str(e)}")
+                        except Exception as e:
+                            if is_rate_limit_error(e): show_rate_limit_msg()
+                            else: st.error(f"Error: {str(e)}")
         with tab_topic:
             st.markdown("Generate a quiz on **any subject** — no PDF needed.")
             st.markdown("**🔥 Popular subjects — click to select:**")
@@ -647,7 +712,9 @@ elif st.session_state.active_tab == "quiz":
                                 st.session_state.quiz_mode=f"Topic: {chosen}"
                                 st.session_state["topic_subject_default"]=""; st.rerun()
                             else: st.error("Could not generate quiz. Please try again.")
-                        except Exception as e: st.error(f"Error generating quiz: {str(e)}")
+                        except Exception as e:
+                            if is_rate_limit_error(e): show_rate_limit_msg()
+                            else: st.error(f"Error generating quiz: {str(e)}")
 
     elif st.session_state.quiz_questions and not st.session_state.quiz_submitted:
         questions = st.session_state.quiz_questions
@@ -749,4 +816,5 @@ elif st.session_state.active_tab == "compare":
                         st.markdown("### 📊 Comparison Results")
                         st.markdown(f'<div class="summary-card">{comparison}</div>', unsafe_allow_html=True)
                     except Exception as e:
-                        st.error(f"Error comparing documents: {str(e)}")
+                        if is_rate_limit_error(e): show_rate_limit_msg()
+                        else: st.error(f"Error comparing documents: {str(e)}")
