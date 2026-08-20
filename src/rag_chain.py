@@ -55,7 +55,7 @@ Question: {question}"""
         
         # Call Groq directly - no reasoning_format involved
         response = get_client().chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-120b",
             messages=messages,
             temperature=0.3,
             max_tokens=1500,
